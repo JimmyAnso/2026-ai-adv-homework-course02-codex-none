@@ -11,6 +11,7 @@ Use this skill to manually drive this project's customer purchase flow with the 
 
 - Start in the repository root. The MCP dependency and project configuration are `chrome-devtools-mcp` and `.vscode/mcp.json`. The server config launches Chrome headed and grants screenshot file access to the workspace. Use Chrome DevTools MCP browser tools for all browser interaction; do not substitute Playwright or direct API/database changes.
 - Use `http://localhost:3001` so the ECPay return URL shares the storefront's cookie origin. Check port 3001 first; if unavailable, start `npm run dev:server` and wait until ready.
+- Track whether this run started the storefront server and retain its process/session handle. At the end of the run—pass or fail—stop only the server started by this run and verify port 3001 is no longer listening. If a server was already running before the test, leave it untouched. Never kill an unidentified process merely because it owns port 3001.
 - Development seed login defaults to `admin@hexschool.com` / `12345678`. Use `E2E_ADMIN_EMAIL` and `E2E_ADMIN_PASSWORD` if the project provides them. Never include secrets in screenshots or handoff.
 - Use clearly fake recipient/contact information. Confirm that ECPay is the staging host before proceeding with any payment step.
 
@@ -27,6 +28,8 @@ Before retrying, inspect the existing test order and its status. Avoid creating 
 ## Screenshots and handoff
 
 Every run must finish with screenshot evidence, including failed runs. Use Chrome DevTools MCP's `take_screenshot` tool to save the final storefront order state to `test-results/` (for example, `test-results/storefront-e2e-order.png`). Capture an additional ECPay checkpoint when it helps establish which payment route was selected or where a failure occurred. Keep screenshots free of secrets and real personal data.
+
+Save the required screenshots before shutting down a server started for the test. Then perform the owned-server cleanup described above and report whether the port was released; do not stop a pre-existing server.
 
 Report the result, the verified order number/status and amount, and whether the payment was staging/mock. Include a clickable link to the screenshot artifact in the final response; for failures, link the last meaningful checkpoint and name what remains unverified. `test-results/` is git-ignored, so attach/link the local artifact rather than expecting it in a commit.
 
