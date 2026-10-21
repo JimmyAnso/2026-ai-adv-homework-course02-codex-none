@@ -1,5 +1,5 @@
 <div id="app">
-  <h1 class="text-2xl font-bold text-text-primary mb-6" style="font-family: 'Noto Serif TC', serif;">結帳</h1>
+  <p class="section-kicker mb-2">最後一步</p><h1 class="display text-3xl font-bold text-text-primary mb-8">填好送花地址</h1>
 
   <div v-if="loading" class="flex justify-center py-12">
     <div class="w-8 h-8 border-4 border-rose-primary border-t-transparent rounded-full animate-spin"></div>
@@ -8,7 +8,7 @@
   <div v-else class="flex flex-col lg:flex-row gap-8">
     <!-- Left: Form -->
     <div class="lg:w-3/5">
-      <div class="bg-white rounded-2xl shadow-sm p-6">
+      <div class="paper p-6 sm:p-8">
         <h2 class="font-medium text-text-primary mb-4">收件資訊</h2>
         <div class="space-y-4">
           <div>
@@ -17,7 +17,7 @@
               v-model="form.recipientName"
               type="text"
               placeholder="請輸入收件人姓名"
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-rose-primary transition-colors"
+              class="field"
               :class="{ 'border-red-400': errors.recipientName }"
             />
             <p v-if="errors.recipientName" class="text-red-500 text-xs mt-1">{{ errors.recipientName }}</p>
@@ -28,7 +28,7 @@
               v-model="form.recipientEmail"
               type="email"
               placeholder="請輸入 Email"
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-rose-primary transition-colors"
+              class="field"
               :class="{ 'border-red-400': errors.recipientEmail }"
             />
             <p v-if="errors.recipientEmail" class="text-red-500 text-xs mt-1">{{ errors.recipientEmail }}</p>
@@ -39,7 +39,7 @@
               v-model="form.recipientAddress"
               type="text"
               placeholder="請輸入收件地址"
-              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-rose-primary transition-colors"
+              class="field"
               :class="{ 'border-red-400': errors.recipientAddress }"
             />
             <p v-if="errors.recipientAddress" class="text-red-500 text-xs mt-1">{{ errors.recipientAddress }}</p>
@@ -50,7 +50,7 @@
 
     <!-- Right: Summary -->
     <div class="lg:w-2/5">
-      <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-24">
+      <div class="paper p-6 sticky top-24">
         <h2 class="font-medium text-text-primary mb-4">訂單摘要</h2>
         <div class="space-y-3 mb-4">
           <div v-for="item in cartItems" :key="item.id" class="flex justify-between text-sm">
@@ -77,7 +77,7 @@
         <button
           @click="submitOrder"
           :disabled="submitting"
-          class="w-full mt-4 bg-rose-primary text-white py-3 rounded-full text-sm font-medium hover:bg-rose-dark transition-colors disabled:opacity-50"
+          class="button-primary w-full mt-4 disabled:opacity-50"
         >
           {{ submitting ? '處理中...' : '確認送出訂單' }}
         </button>

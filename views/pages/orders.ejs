@@ -1,5 +1,5 @@
 <div id="app">
-  <h1 class="text-2xl font-bold text-text-primary mb-6" style="font-family: 'Noto Serif TC', serif;">我的訂單</h1>
+  <p class="section-kicker mb-2">訂購紀錄</p><h1 class="display text-3xl font-bold text-text-primary mb-8">每一份送出的心意</h1>
 
   <div v-if="loading" class="flex justify-center py-12">
     <div class="w-8 h-8 border-4 border-rose-primary border-t-transparent rounded-full animate-spin"></div>
@@ -9,7 +9,7 @@
     <div class="text-4xl mb-3">&#128230;</div>
     <p class="text-text-secondary mb-1">尚無訂單</p>
     <p class="text-text-muted text-sm mb-4">快去選購喜歡的花束吧！</p>
-    <a href="/" class="inline-block bg-rose-primary text-white px-6 py-2 rounded-full text-sm hover:bg-rose-dark transition-colors">去逛逛</a>
+    <a href="/" class="button-primary mt-2">去逛逛</a>
   </div>
 
   <div v-else class="space-y-4">
@@ -17,7 +17,7 @@
       v-for="order in orders"
       :key="order.id"
       :href="'/orders/' + order.id"
-      class="block bg-white rounded-2xl shadow-sm p-5 hover:shadow-md transition-shadow"
+      class="paper block border-l-2 border-l-rose-primary p-5 transition hover:bg-[#fffaf7]"
     >
       <div class="flex items-center justify-between">
         <div>

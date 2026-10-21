@@ -1,5 +1,5 @@
 <div id="app" data-order-id="<%= orderId %>" data-payment-result="<%= paymentResult %>">
-  <h1 class="text-2xl font-bold text-text-primary mb-6" style="font-family: 'Noto Serif TC', serif;">訂單詳情</h1>
+  <p class="section-kicker mb-2">訂購紀錄</p><h1 class="display text-3xl font-bold text-text-primary mb-8">訂單詳情</h1>
 
   <div v-if="loading" class="flex justify-center py-12">
     <div class="w-8 h-8 border-4 border-rose-primary border-t-transparent rounded-full animate-spin"></div>
@@ -16,7 +16,7 @@
     </div>
 
     <!-- Order Info -->
-    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="paper p-6 mb-6">
       <div class="flex items-start justify-between">
         <div>
           <p class="text-sm text-text-secondary">訂單編號：{{ order.order_no }}</p>
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Recipient Info -->
-    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="paper p-6 mb-6">
       <h2 class="font-medium text-text-primary mb-3">收件資訊</h2>
       <div class="text-sm space-y-2 text-text-secondary">
         <p>收件人：{{ order.recipient_name }}</p>
@@ -42,7 +42,7 @@
     </div>
 
     <!-- Order Items -->
-    <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <div class="paper p-6 mb-6 overflow-x-auto">
       <h2 class="font-medium text-text-primary mb-3">商品明細</h2>
       <table class="w-full text-sm">
         <thead>
@@ -75,13 +75,13 @@
       <button
         @click="checkPayment"
         :disabled="paying"
-        class="bg-sage text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-sage/90 transition-colors disabled:opacity-50"
+        class="bg-sage text-white px-8 py-3 text-sm font-medium hover:bg-sage/90 transition-colors disabled:opacity-50"
       >
         {{ paying ? '查詢中...' : '查詢付款狀態' }}
       </button>
       <a
         :href="'/ecpay/payment/' + order.id"
-        class="inline-block bg-rose-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-rose-dark transition-colors text-center"
+        class="button-primary px-8 text-center"
       >
         前往付款
       </a>

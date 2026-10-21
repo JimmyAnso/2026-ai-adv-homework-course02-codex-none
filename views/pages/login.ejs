@@ -1,23 +1,21 @@
 <div id="app">
   <div class="min-h-[60vh] flex items-center justify-center">
-    <div class="bg-white rounded-2xl shadow-sm w-full max-w-md p-8">
-      <h1 class="text-2xl font-bold text-rose-primary text-center mb-6" style="font-family: 'Noto Serif TC', serif;">
-        花漾生活
-      </h1>
+    <div class="paper w-full max-w-md p-7 sm:p-10">
+      <p class="section-kicker text-center mb-2">WELCOME BACK</p><h1 class="display text-3xl font-bold text-rose-primary text-center mb-7">花漾生活</h1>
 
       <!-- Tabs -->
-      <div class="flex mb-6 border border-gray-200 rounded-full overflow-hidden">
+      <div class="flex mb-7 border border-[#b9c0b8] overflow-hidden">
         <button
           @click="activeTab = 'login'; errors = {}"
           class="flex-1 py-2 text-sm font-medium transition-colors"
-          :class="activeTab === 'login' ? 'bg-rose-primary text-white' : 'text-text-secondary hover:bg-gray-50'"
+          :class="activeTab === 'login' ? 'bg-rose-primary text-white' : 'text-text-secondary hover:bg-[#f4f2ec]'"
         >
           登入
         </button>
         <button
           @click="activeTab = 'register'; errors = {}"
           class="flex-1 py-2 text-sm font-medium transition-colors"
-          :class="activeTab === 'register' ? 'bg-rose-primary text-white' : 'text-text-secondary hover:bg-gray-50'"
+          :class="activeTab === 'register' ? 'bg-rose-primary text-white' : 'text-text-secondary hover:bg-[#f4f2ec]'"
         >
           註冊
         </button>
@@ -31,7 +29,7 @@
             v-model="loginForm.email"
             type="email"
             placeholder="請輸入 Email"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-rose-primary"
+            class="field"
             :class="{ 'border-red-400': errors.email }"
           />
           <p v-if="errors.email" class="text-red-500 text-xs mt-1">{{ errors.email }}</p>
@@ -43,7 +41,7 @@
             v-model="loginForm.password"
             type="password"
             placeholder="請輸入密碼"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-rose-primary"
+            class="field"
             :class="{ 'border-red-400': errors.password }"
           />
           <p v-if="errors.password" class="text-red-500 text-xs mt-1">{{ errors.password }}</p>
@@ -52,7 +50,7 @@
         <button
           type="submit"
           :disabled="submitting"
-          class="w-full bg-rose-primary text-white py-3 rounded-full text-sm font-medium hover:bg-rose-dark transition-colors disabled:opacity-50"
+          class="button-primary w-full disabled:opacity-50"
         >
           {{ submitting ? '登入中...' : '登入' }}
         </button>
@@ -66,7 +64,7 @@
             v-model="registerForm.name"
             type="text"
             placeholder="請輸入姓名"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-rose-primary"
+            class="field"
             :class="{ 'border-red-400': errors.name }"
           />
           <p v-if="errors.name" class="text-red-500 text-xs mt-1">{{ errors.name }}</p>
@@ -78,7 +76,7 @@
             v-model="registerForm.email"
             type="email"
             placeholder="請輸入 Email"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-rose-primary"
+            class="field"
             :class="{ 'border-red-400': errors.email }"
           />
           <p v-if="errors.email" class="text-red-500 text-xs mt-1">{{ errors.email }}</p>
@@ -90,7 +88,7 @@
             v-model="registerForm.password"
             type="password"
             placeholder="至少 6 個字元"
-            class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-rose-primary"
+            class="field"
             :class="{ 'border-red-400': errors.password }"
           />
           <p v-if="errors.password" class="text-red-500 text-xs mt-1">{{ errors.password }}</p>
@@ -99,7 +97,7 @@
         <button
           type="submit"
           :disabled="submitting"
-          class="w-full bg-rose-primary text-white py-3 rounded-full text-sm font-medium hover:bg-rose-dark transition-colors disabled:opacity-50"
+          class="button-primary w-full disabled:opacity-50"
         >
           {{ submitting ? '註冊中...' : '註冊' }}
         </button>
