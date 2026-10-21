@@ -23,6 +23,8 @@ Thumbs.db
 
 # IDE
 .vscode/
+!.vscode/
+!.vscode/mcp.json
 .idea/
 
 # Logs
@@ -31,6 +33,8 @@ npm-debug.log*
 
 # Test coverage
 coverage/
+/test-results/
+/playwright-report/
 
 # Temp files
 *.tmp

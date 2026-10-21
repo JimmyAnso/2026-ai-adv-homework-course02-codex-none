@@ -13,87 +13,75 @@
   </div>
 
   <template v-else>
-    <!-- Free shipping banner -->
-    <div v-if="total < 500" class="border-l-2 border-apricot bg-[#fffefa] p-3 mb-6 text-sm text-rose-primary">
-      &#127803; 再買 NT$ {{ (500 - total).toLocaleString() }} 即可享免運費！
-    </div>
-    <div v-else class="border-l-2 border-sage bg-[#fffefa] p-3 mb-6 text-sm text-sage">
-      &#10003; 已達免運門檻！
-    </div>
-
-    <!-- Cart Items -->
-    <div class="paper overflow-hidden mb-6">
-      <div
-        v-for="item in items"
-        :key="item.id"
-        class="flex items-center gap-4 p-4 border-b border-[#d8dad3] last:border-0"
-      >
-        <img
-          :src="item.product.image_url || 'https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=100'"
-          :alt="item.product.name"
-          class="w-16 h-16 object-cover flex-shrink-0"
-        />
-        <div class="flex-1 min-w-0">
-          <h3 class="font-medium text-text-primary text-sm truncate">{{ item.product.name }}</h3>
-          <p class="text-rose-primary text-sm">NT$ {{ item.product.price.toLocaleString() }}</p>
+    <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+      <div>
+        <div v-if="total < 500" class="border-l-2 border-apricot bg-[#fffefa] p-3 mb-5 text-sm text-rose-primary">
+          再選 NT$ {{ (500 - total).toLocaleString() }} 就能享有免運配送
+          <div class="mt-2 h-1.5 overflow-hidden bg-[#eeeae3]"><span class="block h-full bg-apricot" :style="{ width: Math.min(total / 500 * 100, 100) + '%' }"></span></div>
+        </div>
+        <div v-else class="border-l-2 border-sage bg-[#fffefa] p-3 mb-5 text-sm text-sage">
+          已達免運門檻，這筆訂單享有免運配送
         </div>
 
-        <!-- Quantity Controls -->
-        <div class="flex items-center border border-[#b9c0b8] overflow-hidden">
-          <button
-            @click="updateQuantity(item.id, item.quantity - 1)"
-            :disabled="item.quantity <= 1"
-            class="w-8 h-8 flex items-center justify-center hover:bg-gray-50 text-text-secondary text-sm disabled:opacity-40"
+        <div class="paper overflow-hidden">
+          <div
+            v-for="item in items"
+            :key="item.id"
+            class="cart-line"
           >
-            -
-          </button>
-          <span class="w-8 h-8 flex items-center justify-center text-sm border-x border-gray-200">
-            {{ item.quantity }}
-          </span>
-          <button
-            @click="updateQuantity(item.id, item.quantity + 1)"
-            :disabled="item.quantity >= item.product.stock"
-            class="w-8 h-8 flex items-center justify-center hover:bg-gray-50 text-text-secondary text-sm disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            +
-          </button>
+            <img
+              :src="item.product.image_url || 'https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=160'"
+              :alt="item.product.name"
+              class="cart-line-image"
+            />
+            <div class="flex-1 min-w-0">
+              <h3 class="font-medium text-text-primary text-sm">{{ item.product.name }}</h3>
+              <p class="mt-1 text-rose-primary text-sm">NT$ {{ item.product.price.toLocaleString() }}</p>
+            </div>
+
+            <div class="flex items-center border border-[#b9c0b8] overflow-hidden">
+              <button
+                @click="updateQuantity(item.id, item.quantity - 1)"
+                :disabled="item.quantity <= 1"
+                :aria-label="'減少 ' + item.product.name + ' 數量'"
+                class="w-8 h-8 flex items-center justify-center hover:bg-gray-50 text-text-secondary text-sm disabled:opacity-40"
+              >−</button>
+              <span class="w-8 h-8 flex items-center justify-center text-sm border-x border-gray-200">{{ item.quantity }}</span>
+              <button
+                @click="updateQuantity(item.id, item.quantity + 1)"
+                :disabled="item.quantity >= item.product.stock"
+                :aria-label="'增加 ' + item.product.name + ' 數量'"
+                class="w-8 h-8 flex items-center justify-center hover:bg-gray-50 text-text-secondary text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+              >＋</button>
+            </div>
+
+            <p class="text-text-primary font-bold text-sm w-24 text-right">
+              NT$ {{ (item.product.price * item.quantity).toLocaleString() }}
+            </p>
+
+            <button @click="confirmDelete(item.id)" :aria-label="'移除 ' + item.product.name" class="text-text-muted hover:text-red-500 transition-colors text-sm ml-1">移除</button>
+          </div>
         </div>
+        <a href="/" class="cart-continue-link">← 繼續挑選花束</a>
+      </div>
 
-        <p class="text-text-primary font-medium text-sm w-24 text-right">
-          NT$ {{ (item.product.price * item.quantity).toLocaleString() }}
-        </p>
-
-        <button
-          @click="confirmDelete(item.id)"
-          class="text-text-muted hover:text-red-500 transition-colors text-sm ml-2"
-        >
-          &#128465;
-        </button>
-      </div>
-    </div>
-
-    <!-- Summary -->
-    <div class="paper p-6">
-      <div class="flex justify-between items-center mb-2 text-sm">
-        <span class="text-text-secondary">商品小計</span>
-        <span class="text-text-primary">NT$ {{ total.toLocaleString() }}</span>
-      </div>
-      <div class="flex justify-between items-center mb-4 text-sm">
-        <span class="text-text-secondary">運費</span>
-        <span class="text-text-primary">{{ total >= 500 ? '免運' : 'NT$ 150' }}</span>
-      </div>
-      <div class="border-t border-gray-100 pt-4 flex justify-between items-center">
-        <span class="font-bold text-text-primary">總計</span>
-        <span class="font-bold text-xl text-rose-primary">
-          NT$ {{ (total + (total >= 500 ? 0 : 150)).toLocaleString() }}
-        </span>
-      </div>
-      <button
-        @click="goCheckout"
-        class="button-primary w-full mt-4"
-      >
-        前往結帳
-      </button>
+      <aside class="paper p-5 sm:p-6 lg:sticky lg:top-32">
+        <h2 class="display mb-5 text-xl font-bold text-text-primary">訂單摘要</h2>
+        <div class="flex justify-between items-center mb-3 text-sm">
+          <span class="text-text-secondary">商品小計</span>
+          <span class="text-text-primary">NT$ {{ total.toLocaleString() }}</span>
+        </div>
+        <div class="flex justify-between items-center mb-5 text-sm">
+          <span class="text-text-secondary">運費</span>
+          <span class="text-text-primary">{{ total >= 500 ? '免運' : 'NT$ 150' }}</span>
+        </div>
+        <div class="border-t border-[#d8dad3] pt-4 flex justify-between items-center">
+          <span class="font-bold text-text-primary">應付總額</span>
+          <span class="font-bold text-xl text-rose-primary">NT$ {{ (total + (total >= 500 ? 0 : 150)).toLocaleString() }}</span>
+        </div>
+        <button @click="goCheckout" class="button-primary w-full mt-5">前往結帳</button>
+        <p class="mt-3 text-center text-xs text-text-muted">結帳時填寫收件與配送資料</p>
+      </aside>
     </div>
   </template>
 

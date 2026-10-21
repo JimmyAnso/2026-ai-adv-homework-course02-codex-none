@@ -1,13 +1,57 @@
-<div id="app">
-  <section class="grid overflow-hidden border border-[#d8dad3] bg-[#fffefa] lg:grid-cols-[1.05fr_.95fr]">
-    <div class="flex min-h-[28rem] flex-col justify-between p-7 sm:p-11 lg:p-14">
-      <p class="section-kicker">TAIPEI · 當令花束與心意配送</p>
-      <div class="max-w-xl py-10"><h1 class="display text-4xl font-bold leading-[1.35] text-text-primary sm:text-5xl">把今天想說的話，<br>交給一束正在盛開的花。</h1><p class="mt-6 max-w-md leading-8 text-text-secondary">從清晨挑花、午後整理，到送到你在意的人手上。花漾生活用當季花材，做好一份剛剛好的心意。</p><a href="#products" class="button-primary mt-8">看看今天的花束 <span aria-hidden="true">↘</span></a></div>
-      <div class="flex gap-8 border-t border-[#d8dad3] pt-5 text-sm text-text-secondary"><span><b class="block text-text-primary">當日配送</b>台北市區</span><span><b class="block text-text-primary">滿 NT$500</b>免運送達</span></div>
+<div id="app" class="storefront">
+  <section class="home-hero">
+    <div class="home-hero-copy">
+      <p class="section-kicker">花漾生活花店・台北</p>
+      <h1 class="display">把喜歡的心意，<br>好好送到。</h1>
+      <p class="home-hero-description">由花藝師挑選當令花材，為生日、相聚和每個想說謝謝的日子，親手完成一束花。</p>
+      <a href="#products" class="button-primary home-hero-button">挑選一束花 <span aria-hidden="true">↓</span></a>
+      <div class="home-hero-promises"><span>台北市區當日配送</span><span>滿 NT$500 免運</span></div>
     </div>
-    <div class="relative min-h-[22rem] overflow-hidden"><img src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1200" alt="盛放的季節花束" class="absolute inset-0 h-full w-full object-cover"><p class="absolute bottom-5 right-5 bg-[#fffefa]/90 px-3 py-2 text-xs text-text-secondary">本週花材：大理花、洋桔梗、尤加利</p></div>
+    <div class="home-hero-image">
+      <img src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=1400" alt="花藝師整理中的當季花束">
+      <span class="hero-image-note">花材依季節供應<br><b>由花藝師每日挑選搭配</b></span>
+    </div>
   </section>
-  <section class="my-20"><div class="mb-8 flex items-end justify-between gap-4"><div><p class="section-kicker">本週挑選</p><h2 class="display mt-2 text-3xl font-bold">送出去的，都是好時光。</h2></div><a href="#products" class="nav-link border-b border-current pb-1">全部花束</a></div><div class="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-4"><article v-for="(product, idx) in products.slice(0, 4)" :key="product.id" @click="goToProduct(product.id)" class="group cursor-pointer"><div class="aspect-[4/5] overflow-hidden bg-[#e9d7d0]"><img :src="product.image_url || featuredImages[idx % 4]" :alt="product.name" class="h-full w-full object-cover transition duration-500 group-hover:scale-105"></div><div class="mt-3 flex items-start justify-between gap-2"><h3 class="font-medium text-text-primary">{{ product.name }}</h3><p class="shrink-0 text-sm text-rose-primary">NT$ {{ product.price.toLocaleString() }}</p></div></article></div></section>
-  <section id="products" class="border-t border-[#b9c0b8] pt-8"><div class="mb-8 grid gap-4 md:grid-cols-2 md:items-end"><div><p class="section-kicker">花束目錄</p><h2 class="display mt-2 text-3xl font-bold">為每一種心情選花</h2></div><p class="max-w-md leading-7 text-text-secondary">每束花都依當日狀態完成搭配；照片是色調與份量的參考，讓季節有自己的呼吸。</p></div><div v-if="loading" class="py-20 text-center text-text-secondary">花藝師正在整理今日花材…</div><template v-else><div v-if="products.length === 0" class="paper py-16 text-center"><p class="display text-xl">今天的花架還在準備中</p><p class="mt-2 text-sm text-text-secondary">晚一點再回來看看。</p></div><div v-else class="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3"><article v-for="product in products" :key="product.id" class="group"><button @click="goToProduct(product.id)" class="block w-full text-left"><div class="aspect-[4/5] overflow-hidden bg-[#e9d7d0]"><img :src="product.image_url || 'https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=400'" :alt="product.name" class="h-full w-full object-cover transition duration-500 group-hover:scale-105"></div><h3 class="mt-4 font-bold text-text-primary">{{ product.name }}</h3></button><div class="mt-2 flex items-center justify-between gap-3"><p class="text-rose-primary">NT$ {{ product.price.toLocaleString() }}</p><button @click="addToCart(product)" :disabled="product._adding || product.stock <= 0" class="text-sm font-bold text-text-primary underline decoration-[#cf7656] decoration-2 underline-offset-4 disabled:text-text-muted">{{ product.stock <= 0 ? '暫時售完' : '加入花籃' }}</button></div></article></div><div v-if="pagination.totalPages > 1" class="mt-12 flex justify-center gap-2"><button v-for="p in pagination.totalPages" :key="p" @click="loadProducts(p)" class="h-10 w-10 border text-sm" :class="p === pagination.page ? 'border-rose-primary bg-rose-primary text-white' : 'border-[#b9c0b8] text-text-secondary'">{{ p }}</button></div></template></section>
-  <section class="my-20 grid border-y border-[#d8dad3] py-10 md:grid-cols-3"><div class="px-5 py-4 md:border-r md:border-[#d8dad3]"><p class="display text-xl">新鮮入店</p><p class="mt-2 text-sm leading-6 text-text-secondary">當日挑選、清水養護，再交到花藝師手上。</p></div><div class="px-5 py-4 md:border-r md:border-[#d8dad3]"><p class="display text-xl">好好包裝</p><p class="mt-2 text-sm leading-6 text-text-secondary">不浮誇，但能讓收到的人感覺被好好對待。</p></div><div class="px-5 py-4"><p class="display text-xl">準時抵達</p><p class="mt-2 text-sm leading-6 text-text-secondary">台北市區提供當日配送，讓心意不必久等。</p></div></section>
+
+  <section class="shop-promises" aria-label="花店服務">
+    <div><span class="promise-icon" aria-hidden="true">✳</span><span><b>當日挑選</b><small>每天新鮮進貨整理</small></span></div>
+    <div><span class="promise-icon" aria-hidden="true">✳</span><span><b>花藝師手作</b><small>每束花仔細搭配包裝</small></span></div>
+    <div><span class="promise-icon" aria-hidden="true">✳</span><span><b>安心送達</b><small>台北市區當日配送</small></span></div>
+  </section>
+
+  <section id="products" class="shop-section">
+    <div class="shop-section-heading">
+      <div><p class="section-kicker">為今天挑一束</p><h2 class="display">挑選花束</h2></div>
+      <p>每一束都由花藝師依當日花況完成，<br class="hidden sm:block">花材和色彩會隨季節調整。</p>
+    </div>
+
+    <div v-if="loading" class="catalog-loading" role="status">正在整理今天的花束…</div>
+    <template v-else>
+      <div v-if="products.length === 0" class="empty-catalog"><p class="display">花架正在補上新鮮花材</p><p>稍後再回來，看看今天盛開的選擇。</p></div>
+      <div v-else class="product-grid">
+        <article v-for="(product, idx) in products" :key="product.id" class="product-card">
+          <button @click="goToProduct(product.id)" class="product-image-link" :aria-label="'查看 ' + product.name + ' 商品詳情'">
+            <span v-if="idx === 0 && pagination.page === 1" class="product-ribbon">當令花材</span>
+            <img :src="product.image_url || featuredImages[idx % featuredImages.length]" :alt="product.name" class="product-image">
+            <span class="product-quick-view">查看花束</span>
+          </button>
+          <div class="product-card-info">
+            <button @click="goToProduct(product.id)" class="product-name">{{ product.name }}</button>
+            <p class="product-card-description">{{ product.description || '當令花材・花藝師手作' }}</p>
+            <div class="product-price-row"><span class="product-price">NT$ {{ product.price.toLocaleString() }}</span><span class="product-availability">{{ product.stock > 0 ? '新鮮製作' : '本日售完' }}</span></div>
+            <button @click="addToCart(product)" :disabled="product._adding || product.stock <= 0" class="button-primary product-add-button">
+              <svg v-if="!product._adding && product.stock > 0" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.5L20 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M13 7v6M10 10h6"/></svg>
+              {{ product.stock <= 0 ? '本日售完' : product._adding ? '正在加入…' : '加入購物車' }}
+            </button>
+          </div>
+        </article>
+      </div>
+      <nav v-if="pagination.totalPages > 1" class="catalog-pagination" aria-label="商品頁碼"><button v-for="p in pagination.totalPages" :key="p" @click="loadProducts(p)" :aria-current="p === pagination.page ? 'page' : null" :class="p === pagination.page ? 'is-current' : ''">{{ p }}</button></nav>
+    </template>
+  </section>
+
+  <section class="atelier-note">
+    <div class="atelier-note-image"><img src="https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=1200" alt="花藝師在工作桌上整理花材"></div>
+    <div class="atelier-note-copy"><p class="section-kicker">花漾生活的日常</p><h2 class="display">一束花，從<br>認真挑選開始。</h2><p>我們相信花不只是特別日子的禮物，也可以是讓普通一天變得明亮的小事。每天從花市挑回合適的花材，再一束一束完成。</p><a href="#products" class="text-link">看看今天的花束 <span aria-hidden="true">↗</span></a></div>
+  </section>
 </div>
